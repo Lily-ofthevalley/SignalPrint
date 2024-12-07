@@ -5,6 +5,11 @@ name = "pypi"
 
 [packages]
 qrcode = {extras = ["pil"], version = "*"}
+solidpython = "*"
+numpy = "*"
+pillow = "*"
+setuptools = "*"
+numpy-stl = "*"
 
 [dev-packages]
 
