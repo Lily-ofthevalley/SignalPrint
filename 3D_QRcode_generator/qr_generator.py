@@ -1,11 +1,11 @@
 import qrcode
 import qrcode.constants
-from utils import GetWifiDetails
+from utils import get_wifi_details
 
 
 def generate_qr_code():
     """This function generates a qr code image with the wifi data"""
-    wifi_data = GetWifiDetails()
+    wifi_data = get_wifi_details()
 
     qr = qrcode.QRCode(
         version=1,

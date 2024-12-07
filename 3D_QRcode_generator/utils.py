@@ -1,7 +1,8 @@
 import subprocess
 
 
-def GetWifiDetails():
+def get_wifi_details():
+    """This function gets the wifi: name, password and encryption type"""
     # Get general WiFi details
     data = subprocess.check_output(
         (['netsh', 'WLAN', 'show', 'interfaces'])).decode("utf-8")
