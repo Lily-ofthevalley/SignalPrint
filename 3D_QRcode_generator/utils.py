@@ -37,5 +37,4 @@ def GetWifiDetails():
 
     # Create WiFi QR Code text
     qr_code_text = f"WIFI:S:{ssid};T:{encryption};P:{password};;"
-    print(qr_code_text)
     return qr_code_text
