@@ -1,14 +1,17 @@
+import os
 import numpy as np
 from stl import mesh
 from PIL import Image
+from utils import get_downloads_folder
 
 
 def qr_to_stl():
-    img = Image.open("./Qrcode/QrCode.png").convert('L')
+    img = Image.open("./supportingFiles/QrCode.png").convert('L')
     img_array = np.array(img)
 
-    cube_size = 1.0
-    cube_height = 20.0
+    cube_size = 1.0 #Size of each cube
+    cube_height = 2.5 #Height og each cube
+    scale_factor = 0.06 #Scaling factor to reduce size
 
     vertices = []
     faces = []
@@ -16,14 +19,14 @@ def qr_to_stl():
     for y in range(img_array.shape[0]):
         for x in range(img_array.shape[1]):
             if img_array[y, x] < 128:
-                v0 = [x * cube_size, y * cube_size, 0]
-                v1 = [x * cube_size, (y + 1) * cube_size, 0]
-                v2 = [(x + 1) * cube_size, (y + 1) * cube_size, 0]
-                v3 = [(x + 1) * cube_size, y * cube_size, 0]
-                v4 = [x * cube_size, y * cube_size, cube_height]
-                v5 = [x * cube_size, (y + 1) * cube_size, cube_height]
-                v6 = [(x + 1) * cube_size, (y + 1) * cube_size, cube_height]
-                v7 = [(x + 1) * cube_size, y * cube_size, cube_height]
+                v0 = [x * cube_size * scale_factor, y * cube_size * scale_factor, 0]
+                v1 = [x * cube_size * scale_factor, (y + 1) * cube_size * scale_factor, 0]
+                v2 = [(x + 1) * cube_size * scale_factor, (y + 1) * cube_size * scale_factor, 0]
+                v3 = [(x + 1) * cube_size * scale_factor, y * cube_size * scale_factor, 0]
+                v4 = [x * cube_size * scale_factor, y * cube_size * scale_factor, cube_height]
+                v5 = [x * cube_size * scale_factor, (y + 1) * cube_size * scale_factor, cube_height]
+                v6 = [(x + 1) * cube_size * scale_factor, (y + 1) * cube_size * scale_factor, cube_height]
+                v7 = [(x + 1) * cube_size * scale_factor, y * cube_size * scale_factor, cube_height]
 
                 start_index = len(vertices)
                 vertices.extend([v0, v1, v2, v3, v4, v5, v6, v7])
@@ -51,4 +54,7 @@ def qr_to_stl():
         for j in range(3):
             qr_mesh.vectors[i][j] = vertices[f[j]]
 
-    qr_mesh.save('./Qrcode/qrcode_3d.stl')
+    downloads_folder = get_downloads_folder()
+    stl_file_path = os.path.join(downloads_folder, 'qrcode_3d.stl')
+
+    qr_mesh.save(stl_file_path)
