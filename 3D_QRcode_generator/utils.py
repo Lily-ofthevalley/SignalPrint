@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 
@@ -39,3 +40,11 @@ def get_wifi_details():
     # Create WiFi QR Code text
     qr_code_text = f"WIFI:S:{ssid};T:{encryption};P:{password};;"
     return qr_code_text
+
+def get_downloads_folder():
+    """Returns the path to the user's Downloads folder."""
+    if os.name == 'nt':
+        downloads_folder = os.path.join(os.environ['USERPROFILE'], 'Downloads')
+    else:
+        downloads_folder = os.path.join(os.path.expanduser('~'), 'Downloads')
+    return downloads_folder
