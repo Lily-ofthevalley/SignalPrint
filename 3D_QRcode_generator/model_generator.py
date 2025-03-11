@@ -11,7 +11,7 @@ def qr_to_stl():
 
     cube_size = 1.0 #Size of each cube
     cube_height = 2.5 #Height og each cube
-    scale_factor = 0.06 #Scaling factor to reduce size
+    scale_factor = 1 #Scaling factor to reduce size
 
     vertices = []
     faces = []
