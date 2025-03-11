@@ -54,7 +54,17 @@ def qr_to_stl():
         for j in range(3):
             qr_mesh.vectors[i][j] = vertices[f[j]]
 
-    downloads_folder = get_downloads_folder()
-    stl_file_path = os.path.join(downloads_folder, 'qrcode_3d.stl')
+    qr_mesh.save('./supportingFiles/qrcode_3d.stl')
 
-    qr_mesh.save(stl_file_path)
+def combine_stl_files(file1, file2):
+    mesh1 = mesh.Mesh.from_file(file1)
+    mesh2 = mesh.Mesh.from_file(file2)
+    combined_vertices = np.vstack((mesh1.vectors, mesh2.vectors))
+    
+    combined_mesh = mesh.Mesh(np.zeros(combined_vertices.shape[0], dtype=mesh.Mesh.dtype))
+    combined_mesh.vectors = combined_vertices
+    
+    downloads_folder = get_downloads_folder()
+    stl_file_path = os.path.join(downloads_folder, 'combined.stl')
+
+    combined_mesh.save(stl_file_path)
