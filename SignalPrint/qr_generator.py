@@ -1,6 +1,6 @@
 import qrcode
 import qrcode.constants
-from utils import get_wifi_details
+from SignalPrint.utils.get_wifi_details import get_wifi_details
 
 
 def generate_qr_code():
