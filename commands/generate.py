@@ -1,18 +1,47 @@
+import qrcode
+import qrcode.constants
+import click
 import os
 import numpy as np
 from stl import mesh
 from PIL import Image
-from SignalPrint.utils import center_mesh, rotate_mesh, translate_mesh
-from SignalPrint.utils.get_downloads_folder import get_downloads_folder
+from ..utils import (
+    center_mesh,
+    rotate_mesh,
+    translate_mesh,
+    get_downloads_folder,
+    get_wifi_details
+)
 
+@click.group()
+def generate():
+    pass
+
+def generate_qr_code():
+    """Generate a QR code from Wi-Fi details."""
+    wifi_data = get_wifi_details()
+
+    qr = qrcode.QRCode(
+        version=2,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=1,
+        border=1
+    )
+    qr.add_data(wifi_data)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save("./supportingFiles/QrCode.png", "PNG")
+    click.echo("QR code generated and saved as ./supportingFiles/QrCode.png")
 
 def qr_to_stl():
+    """Convert the QR code image to an STL file."""
     img = Image.open("./supportingFiles/QrCode.png").convert('L')
     img_array = np.array(img)
 
-    cube_size = 1.0 #Size of each cube
-    cube_height = 1.5 #Height og each cube
-    scale_factor = 1 #Scaling factor to reduce size
+    cube_size = 1.0  # Size of each cube
+    cube_height = 1.5  # Height of each cube
+    scale_factor = 1  # Scaling factor to reduce size
 
     vertices = []
     faces = []
@@ -56,32 +85,54 @@ def qr_to_stl():
             qr_mesh.vectors[i][j] = vertices[f[j]]
 
     qr_mesh.save('./supportingFiles/qrcode_3d.stl')
-
+    click.echo("QR code converted to STL and saved as ./supportingFiles/qrcode_3d.stl")
 
 def combine_stl_files(file1, file2):
-    mesh1 = mesh.Mesh.from_file(file1) # The QrCode
-    mesh2 = mesh.Mesh.from_file(file2) # The sign
+    """Combine two STL files into one."""
+    mesh1 = mesh.Mesh.from_file(file1)  # The QrCode
+    mesh2 = mesh.Mesh.from_file(file2)  # The sign
 
     # Center both meshes at the origin
     mesh1.vectors = center_mesh(mesh1)
     mesh2.vectors = center_mesh(mesh2)
 
-
     translation1 = np.array([0, 10, 4.5])  # Move mesh1 10 units along the y-axis and 4.5 units along the z-axis
     rotation_x = (78, 0)  # Rotate mesh1 78 degrees around the x-axis
 
-
-     # Apply transformations to mesh1
+    # Apply transformations to mesh1
     mesh1.vectors = translate_mesh(mesh1.vectors, translation1)
     angle, axis = rotation_x
     mesh1.vectors = rotate_mesh(mesh1.vectors, angle, axis)
 
     combined_vertices = np.vstack((mesh1.vectors, mesh2.vectors))
-    
+
     combined_mesh = mesh.Mesh(np.zeros(combined_vertices.shape[0], dtype=mesh.Mesh.dtype))
     combined_mesh.vectors = combined_vertices
-    
+
     downloads_folder = get_downloads_folder()
     stl_file_path = os.path.join(downloads_folder, 'SignalPrint_Sign.stl')
 
     combined_mesh.save(stl_file_path)
+    click.echo(f"Combined STL file saved as {stl_file_path}")
+
+@generate.command()
+def generate():
+    """Run all steps sequentially: generate QR code, convert to STL, and combine with sign."""
+    click.echo("Starting the generation process...")
+    
+    # Step 1: Generate QR code
+    click.echo("Generating QR code...")
+    generate_qr_code()
+    
+    # Step 2: Convert QR code to STL
+    click.echo("Converting QR code to STL...")
+    qr_to_stl()
+    
+    # Step 3: Combine STL files
+    click.echo("Combining STL files...")
+    combine_stl_files('./supportingFiles/qrcode_3d.stl', './supportingFiles/sign.stl')
+    
+    click.echo("Generation process completed successfully!")
+
+if __name__ == "__main__":
+    generate()

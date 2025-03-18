@@ -1,6 +1,5 @@
 import os
 
-
 def get_downloads_folder():
     if os.name == 'nt':
         downloads_folder = os.path.join(os.environ['USERPROFILE'], 'Downloads')
