@@ -5,13 +5,9 @@ import os
 import numpy as np
 from stl import mesh
 from PIL import Image
-from ..utils import (
-    center_mesh,
-    rotate_mesh,
-    translate_mesh,
-    get_downloads_folder,
-    get_wifi_details
-)
+from utils.mesh_utils import center_mesh, rotate_mesh, translate_mesh
+from utils.folder_utils import get_downloads_folder
+from utils.wifi_utils import get_wifi_details
 
 @click.group()
 def generate():
@@ -130,7 +126,7 @@ def generate():
     
     # Step 3: Combine STL files
     click.echo("Combining STL files...")
-    combine_stl_files('./supportingFiles/qrcode_3d.stl', './supportingFiles/sign.stl')
+    combine_stl_files('./supportingFiles/qrcode_3d.stl', './supportingFiles/signBlank.stl')
     
     click.echo("Generation process completed successfully!")
 
