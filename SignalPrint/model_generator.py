@@ -82,6 +82,6 @@ def combine_stl_files(file1, file2):
     combined_mesh.vectors = combined_vertices
     
     downloads_folder = get_downloads_folder()
-    stl_file_path = os.path.join(downloads_folder, 'combined.stl')
+    stl_file_path = os.path.join(downloads_folder, 'SignalPrint_Sign.stl')
 
     combined_mesh.save(stl_file_path)
