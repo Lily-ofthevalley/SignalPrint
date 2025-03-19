@@ -23,14 +23,20 @@ def show_start_screen():
         choice = click.prompt("Enter your choice (1, 2 or 3)", type=int)
 
         if choice == 1:
+            click.clear()
             click.echo("\nYou selected: Generate QR Code and STL")
+            click.echo("======================================")
             generate()
             break
         elif choice == 2:
+            click.clear()
             click.echo("\nExiting the program. Goodbye!")
+            click.echo("=============================")
             break
         elif choice == 3:
+            click.clear()
             click.echo("\nExiting the program. Goodbye!")
+            click.echo("=============================")
             break
         else:
             click.echo("Invalid choice. Please enter 1, 2 or 3.")
