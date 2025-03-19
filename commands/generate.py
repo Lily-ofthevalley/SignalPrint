@@ -10,7 +10,7 @@ from utils.folder_utils import get_downloads_folder
 from utils.wifi_utils import get_wifi_details
 
 @click.group()
-def generate():
+def generate_file():
     pass
 
 def generate_qr_code():
@@ -111,7 +111,7 @@ def combine_stl_files(file1, file2):
     combined_mesh.save(stl_file_path)
     click.echo(f"Combined STL file saved as {stl_file_path}")
 
-@generate.command()
+@generate_file.command()
 def generate():
     """Run all steps sequentially: generate QR code, convert to STL, and combine with sign."""
     click.echo("Starting the generation process...")
