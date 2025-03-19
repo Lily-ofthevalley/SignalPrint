@@ -1,1 +1,1 @@
-include supportingfiles/signBlank.stl
+include SignalPrint/supportingFiles/*
