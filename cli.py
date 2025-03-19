@@ -1,9 +1,20 @@
 import click
 from commands.generate import generate
 
+WELCOME_ART = r"""
+ _____ _                   _______     _       _   
+/  ___(_)                 | | ___ \   (_)     | |  
+\ `--. _  __ _ _ __   __ _| | |_/ / __ _ _ __ | |_ 
+ `--. \ |/ _` | '_ \ / _` | |  __/ '__| | '_ \| __|
+/\__/ / | (_| | | | | (_| | | |  | |  | | | | | |_ 
+\____/|_|\__, |_| |_|\__,_|_\_|  |_|  |_|_| |_|\__|
+          __/ |                                    
+         |___/                                     
+"""
+
 @click.group()
 def cli():
-    """Main CLI entry point."""
+    """Welcome to SignalPrint type [SignalPrint start] to start the program."""
     pass
 
 cli.add_command(generate)
@@ -12,31 +23,40 @@ cli.add_command(generate)
 def start():
     """Display the start screen and handle user input."""
     click.clear()
-    click.echo("====================================")
-    click.echo("Welcome to the SignalPrint CLI Tool!")
-    click.echo("====================================")
-    click.echo("\nPlease choose an option:")
-    click.echo("1. Automatically Generate QR Code and STL")
-    click.echo("2. Generate QR Code and STL for Custom Wifi (COMING SOON)")
-    click.echo("3. Exit")
+
+    # Display ASCII Art
+    click.secho(WELCOME_ART, fg='cyan', bold=True)
+
+    # Welcome Message
+    click.secho("=============================================", fg='blue', bold=True)
+    click.secho("🎉 Welcome to the SignalPrint CLI Wizard! 🎉", fg='cyan', bold=True)
+    click.secho("=============================================", fg='blue', bold=True)
+
+    #Menu options
+    click.echo("\nPlease choose an option:\n")
+    click.secho("1. Automatically Generate QrCode Sign", fg='cyan')
+    click.secho("2. Generate QR Code and STL for Custom Wifi (COMING SOON)", fg='cyan')
+    click.secho("3. Exit", fg='red')
 
     while True:
-        choice = click.prompt("Enter your choice (1, 2 or 3)", type=int)
+        choice = click.prompt("\nEnter your choice (1, 2 or 3)", type=int)
 
         if choice == 1:
             click.clear()
-            click.echo("\nYou selected: Generate QR Code and STL")
-            click.echo("======================================")
-            generate()
+            click.secho(WELCOME_ART, fg='cyan', bold=True)
+
+            click.secho("================================================", fg='blue', bold=True)
+            click.secho("You selected: Automatically Generate QrCode Sign", fg='cyan', bold=True)
+            click.secho("================================================", fg='blue', bold=True)
+            cli(args=["generate"])
             break
         elif choice == 2:
             click.clear()
-            click.echo("\nExiting the program. Goodbye!")
-            click.echo("=============================")
+            click.secho("\nThis feature is coming soon!", fg='yellow', bold=True)
             break
         elif choice == 3:
             click.clear()
-            click.echo("\nExiting the program. Goodbye!")
+            click.secho("\nExiting the program. Goodbye!", fg='red', bold=True)
             break
         else:
             click.echo("Invalid choice. Please enter 1, 2 or 3.")

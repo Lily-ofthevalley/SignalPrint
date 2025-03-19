@@ -28,7 +28,7 @@ def generate_qr_code():
 
     img = qr.make_image(fill_color="black", back_color="white")
     img.save("./supportingFiles/QrCode.png", "PNG")
-    click.echo("QR code generated and saved as ./supportingFiles/QrCode.png")
+    click.secho("QR code generated succesfully", fg='cyan')
 
 def qr_to_stl():
     """Convert the QR code image to an STL file."""
@@ -81,7 +81,7 @@ def qr_to_stl():
             qr_mesh.vectors[i][j] = vertices[f[j]]
 
     qr_mesh.save('./supportingFiles/qrcode_3d.stl')
-    click.echo("QR code converted to STL and saved as ./supportingFiles/qrcode_3d.stl")
+    click.secho("QR code converted to STL succesfully", fg='cyan')
 
 def combine_stl_files(file1, file2):
     """Combine two STL files into one."""
@@ -109,26 +109,26 @@ def combine_stl_files(file1, file2):
     stl_file_path = os.path.join(downloads_folder, 'SignalPrint_Sign.stl')
 
     combined_mesh.save(stl_file_path)
-    click.echo(f"Combined STL file saved as {stl_file_path}")
+    click.secho("Combined STL file succesfully", fg='cyan')
 
 @generate_file.command()
 def generate():
     """Run all steps sequentially: generate QR code, convert to STL, and combine with sign."""
-    click.echo("Starting the generation process...")
+    click.secho("\nStarting the generation process...", fg='magenta', bold=True)
     
     # Step 1: Generate QR code
-    click.echo("Generating QR code...")
+    click.secho("\nGenerating QR code...", fg='blue', bold=True)
     generate_qr_code()
     
     # Step 2: Convert QR code to STL
-    click.echo("Converting QR code to STL...")
+    click.secho("\nConverting QR code to STL...", fg='blue', bold=True)
     qr_to_stl()
     
     # Step 3: Combine STL files
-    click.echo("Combining STL files...")
+    click.secho("\nCombining STL files...", fg='blue', bold=True)
     combine_stl_files('./supportingFiles/qrcode_3d.stl', './supportingFiles/signBlank.stl')
     
-    click.echo("Generation process completed successfully!")
+    click.secho("\n🎉 Generation process completed successfully! 🎉", fg='magenta', bold=True)
 
 if __name__ == "__main__":
     generate()
