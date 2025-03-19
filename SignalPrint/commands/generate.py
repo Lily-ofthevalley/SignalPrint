@@ -5,9 +5,10 @@ import os
 import numpy as np
 from stl import mesh
 from PIL import Image
-from utils.mesh_utils import center_mesh, rotate_mesh, translate_mesh
-from utils.folder_utils import get_downloads_folder
-from utils.wifi_utils import get_wifi_details
+from SignalPrint.utils.mesh_utils import center_mesh, rotate_mesh, translate_mesh
+from SignalPrint.utils.folder_utils import get_downloads_folder
+from SignalPrint.utils.wifi_utils import get_wifi_details
+from SignalPrint.utils.project_root import get_project_root
 
 @click.group()
 def generate_file():
@@ -16,6 +17,9 @@ def generate_file():
 def generate_qr_code():
     """Generate a QR code from Wi-Fi details."""
     wifi_data = get_wifi_details()
+
+    project_root = get_project_root()
+    supporting_files_dir = os.path.join(project_root, "supportingFiles")
 
     qr = qrcode.QRCode(
         version=2,
@@ -27,12 +31,15 @@ def generate_qr_code():
     qr.make(fit=True)
 
     img = qr.make_image(fill_color="black", back_color="white")
-    img.save("./supportingFiles/QrCode.png", "PNG")
+    img.save(f'{supporting_files_dir}/QrCode.png', "PNG")
     click.secho("QR code generated succesfully", fg='cyan')
 
 def qr_to_stl():
     """Convert the QR code image to an STL file."""
-    img = Image.open("./supportingFiles/QrCode.png").convert('L')
+    project_root = get_project_root()
+    supporting_files_dir = os.path.join(project_root, "supportingFiles")
+
+    img = Image.open(f'{supporting_files_dir}/QrCode.png').convert('L')
     img_array = np.array(img)
 
     cube_size = 1.0  # Size of each cube
@@ -80,12 +87,15 @@ def qr_to_stl():
         for j in range(3):
             qr_mesh.vectors[i][j] = vertices[f[j]]
 
-    qr_mesh.save('./supportingFiles/qrcode_3d.stl')
-    os.remove("./supportingFiles/QrCode.png")
+    qr_mesh.save(f'{supporting_files_dir}/qrcode_3d.stl')
+    os.remove(f'{supporting_files_dir}/QrCode.png')
     click.secho("QR code converted to STL succesfully", fg='cyan')
 
 def combine_stl_files(file1, file2):
     """Combine two STL files into one."""
+    project_root = get_project_root()
+    supporting_files_dir = os.path.join(project_root, "supportingFiles")
+
     mesh1 = mesh.Mesh.from_file(file1)  # The QrCode
     mesh2 = mesh.Mesh.from_file(file2)  # The sign
 
@@ -110,12 +120,15 @@ def combine_stl_files(file1, file2):
     stl_file_path = os.path.join(downloads_folder, 'SignalPrint_Sign.stl')
 
     combined_mesh.save(stl_file_path)
-    os.remove('./supportingFiles/qrcode_3d.stl')
+    os.remove(f'{supporting_files_dir}/qrcode_3d.stl')
     click.secho("Combined STL file succesfully", fg='cyan')
 
 @generate_file.command()
 def generate():
     """Run all steps sequentially: generate QR code, convert to STL, and combine with sign."""
+    project_root = get_project_root()
+    supporting_files_dir = os.path.join(project_root, "supportingFiles")
+
     click.secho("\nStarting the generation process...", fg='magenta', bold=True)
     
     # Step 1: Generate QR code
@@ -128,7 +141,7 @@ def generate():
     
     # Step 3: Combine STL files
     click.secho("\nCombining STL files...", fg='blue', bold=True)
-    combine_stl_files('./supportingFiles/qrcode_3d.stl', './supportingFiles/signBlank.stl')
+    combine_stl_files(f'{supporting_files_dir}/qrcode_3d.stl', f'{supporting_files_dir}/signBlank.stl')
     
     click.secho("\n🎉 Generation process completed successfully! 🎉", fg='magenta', bold=True)
 

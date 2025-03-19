@@ -1,5 +1,5 @@
 import click
-from commands.generate import generate
+from SignalPrint.commands.generate import generate
 
 WELCOME_ART = r"""
  _____ _                   _______     _       _   
@@ -52,8 +52,7 @@ def start():
             break
         elif choice == 2:
             click.clear()
-            click.secho("\nThis feature is coming soon!", fg='yellow', bold=True)
-            break
+            click.echo("\nThis feature is coming soon! Please enter 1, 2 or 3.")
         elif choice == 3:
             click.clear()
             click.secho("\nExiting the program. Goodbye!", fg='red', bold=True)
