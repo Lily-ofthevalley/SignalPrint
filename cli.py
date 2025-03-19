@@ -8,7 +8,8 @@ def cli():
 
 cli.add_command(generate)
 
-def show_start_screen():
+@cli.command()
+def start():
     """Display the start screen and handle user input."""
     click.clear()
     click.echo("====================================")
@@ -36,10 +37,9 @@ def show_start_screen():
         elif choice == 3:
             click.clear()
             click.echo("\nExiting the program. Goodbye!")
-            click.echo("=============================")
             break
         else:
             click.echo("Invalid choice. Please enter 1, 2 or 3.")
 
 if __name__ == "__main__":
-    show_start_screen()
+    start()
