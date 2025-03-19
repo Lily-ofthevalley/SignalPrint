@@ -31,7 +31,7 @@ pip install .
 - In your command prompt type the following to start SignalPrint:
 
 ```
-SignalPrint
+SignalPrint start
 ```
 
 ## Author
