@@ -81,6 +81,7 @@ def qr_to_stl():
             qr_mesh.vectors[i][j] = vertices[f[j]]
 
     qr_mesh.save('./supportingFiles/qrcode_3d.stl')
+    os.remove("./supportingFiles/QrCode.png")
     click.secho("QR code converted to STL succesfully", fg='cyan')
 
 def combine_stl_files(file1, file2):
@@ -109,6 +110,7 @@ def combine_stl_files(file1, file2):
     stl_file_path = os.path.join(downloads_folder, 'SignalPrint_Sign.stl')
 
     combined_mesh.save(stl_file_path)
+    os.remove('./supportingFiles/qrcode_3d.stl')
     click.secho("Combined STL file succesfully", fg='cyan')
 
 @generate_file.command()
