@@ -1,5 +1,6 @@
 import click
 from SignalPrint.commands.generate import generate
+from SignalPrint.commands.generate_custom import generate_custom
 
 WELCOME_ART = r"""
  _____ _                   _______     _       _   
@@ -18,6 +19,7 @@ def cli():
     pass
 
 cli.add_command(generate)
+cli.add_command(generate_custom)
 
 @cli.command()
 def start():
@@ -35,7 +37,7 @@ def start():
     #Menu options
     click.echo("\nPlease choose an option:\n")
     click.secho("1. Automatically Generate QrCode Sign", fg='cyan')
-    click.secho("2. Generate QR Code and STL for Custom Wifi (COMING SOON)", fg='cyan')
+    click.secho("2. Manually Generate QrCode Sign", fg='cyan')
     click.secho("3. Exit", fg='red')
 
     while True:
@@ -52,7 +54,13 @@ def start():
             break
         elif choice == 2:
             click.clear()
-            click.echo("\nThis feature is coming soon! Please enter 1, 2 or 3.")
+            click.secho(WELCOME_ART, fg='cyan', bold=True)
+
+            click.secho("================================================", fg='blue', bold=True)
+            click.secho("You selected: Manually Generate QrCode Sign", fg='cyan', bold=True)
+            click.secho("================================================", fg='blue', bold=True)
+            cli(args=["generate_custom"])
+            break
         elif choice == 3:
             click.clear()
             click.secho("\nExiting the program. Goodbye!", fg='red', bold=True)
