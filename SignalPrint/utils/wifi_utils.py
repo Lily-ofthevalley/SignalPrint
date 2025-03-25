@@ -1,5 +1,7 @@
 import subprocess
 
+import click
+
 
 def get_wifi_details():
     # Get general WiFi details
@@ -37,4 +39,25 @@ def get_wifi_details():
 
     # Create WiFi QR Code text
     qr_code_text = f"WIFI:S:{ssid};T:{encryption};P:{password};;"
+    return qr_code_text
+
+def enter_wifi_details():
+    ssid = click.prompt('WiFi Name (SSID)')
+    encryption = click.prompt(
+        'Encryption Type',
+        type=click.Choice(['WPA', 'WPA2', 'WEP', 'none'], case_sensitive=True)
+    )
+    
+    if encryption.lower() == 'none':
+        password = ""
+    else:
+        password = click.prompt(
+            'WiFi Password',
+            hide_input=True,
+            confirmation_prompt=True
+        )
+    
+    qr_code_text = f"WIFI:S:{ssid};T:{encryption};P:{password};;"
+    
+    click.secho("Wifi details recieved succesfully", fg='cyan')
     return qr_code_text
