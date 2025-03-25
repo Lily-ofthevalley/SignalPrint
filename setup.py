@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='SignalPrint',
-    version='1.0',
+    version='1.1',
     description='A python cli program that can generate a STL file with a qrcode sign based on your current network.',
     url='https://github.com/Lily-ofthevalley/SignalPrint',
     author='Lilith van der Plas',
