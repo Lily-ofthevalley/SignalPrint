@@ -59,7 +59,7 @@ def start():
             click.secho("================================================", fg='blue', bold=True)
             click.secho("You selected: Manually Generate QrCode Sign", fg='cyan', bold=True)
             click.secho("================================================", fg='blue', bold=True)
-            cli(args=["generate_custom"])
+            generate_custom.callback()
             break
         elif choice == 3:
             click.clear()
